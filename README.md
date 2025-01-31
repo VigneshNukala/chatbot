@@ -4,7 +4,7 @@
 This repository showcases website for setting up a new chatbot for new businesses.
 
 ## **Deployment Link:**
-https://fintech-portfolio-dashboard.vercel.app/
+https://chatbot-seven-eosin.vercel.app/
 
 ## **Prerequisites**
 
