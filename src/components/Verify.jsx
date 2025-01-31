@@ -1,44 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+
+//Verify Component
 const Verify = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { formData, verificationCode } = location.state || {}; // Get passed form data and code
+  const { formData, verificationCode } = location.state || {};
   const [userCode, setUserCode] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState("");
 
-  const handleCodeChange = (e) => {
-    setUserCode(e.target.value);
-  };
-
+  //Submitting Verification Code
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Compare entered code with the one that was sent via email
     if (parseInt(userCode) === verificationCode) {
       setIsVerified(true);
       setError("");
-      navigate('/organization')
+      navigate("/organization");
     } else {
       setError("Invalid verification code.");
     }
   };
 
+  //If the Verification code or Formdata is Wrong , Redirect to the Login Page
   useEffect(() => {
     if (!formData || !verificationCode) {
-      navigate("/register"); 
+      navigate("/register");
     }
   }, [formData, verificationCode]);
 
+  //Render starts
   return (
     <div className="flex items-center justify-center min-h-screen px-4 sm:px-0 bg-gradient-to-br from-gray-900 via-blue-800 to-teal-500">
       <div className="bg-white shadow-2xl rounded-3xl p-6 sm:p-10 w-full max-w-sm sm:max-w-md md:max-w-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Verify your email
         </h2>
-        <p className="text-gray-600 mt-4">We've sent a verification code to {formData?.email}.</p>
+        <p className="text-gray-600 mt-4">
+          We've sent a verification code to {formData?.email}.
+        </p>
+        {/*Verification Code Field */}
         <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           <input
             type="text"

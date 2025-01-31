@@ -1,24 +1,32 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { FaGoogle } from "react-icons/fa";
 import emailjs from "emailjs-com";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaGoogle } from "react-icons/fa";
 
+// Register Component
 const Register = () => {
   const navigate = useNavigate();
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [error, setError] = useState("");
+
+  const handleHoverStart = (e) => {
+    setTimeout(() => {
+      setShowForm(true);
+    }, 200);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //Submitting the Form
   const handleSubmit = async (e) => {
     e.preventDefault();
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
@@ -55,14 +63,31 @@ const Register = () => {
     }
   };
 
+  //Render
   return (
-    <>
-      <div className="flex items-center justify-center min-h-screen px-4 sm:px-0 bg-gradient-to-br from-gray-900 via-blue-800 to-teal-500">
+    <div
+      className="flex items-center justify-center min-h-screen px-4 sm:px-0 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url('/bg.jpg')` }}
+    >
+      {/*Shows the Register Button to hover */}
+      {!showForm && (
+        <motion.div
+          onHoverStart={handleHoverStart}
+          className="px-6 py-3 text-gray-800 cursor-pointer bg-white rounded-lg text-lg font-semibold transition duration-300 hover:bg-gray-200"
+          whileHover={{ scale: 1.05 }}
+        >
+          Hover to Register
+        </motion.div>
+      )}
+
+      {/*Register Form*/}
+      {showForm && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="bg-white shadow-2xl rounded-3xl p-6 sm:p-10 w-full max-w-sm sm:max-w-md md:max-w-lg"
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside form
         >
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -73,7 +98,7 @@ const Register = () => {
             Register
           </motion.h2>
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+          <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
             {/* Name Field */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -81,16 +106,14 @@ const Register = () => {
               transition={{ delay: 0.3 }}
               className="relative"
             >
-              <label className="left-4 -top-3 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-teal-500">
-                Full Name
-              </label>
+              <label className="text-gray-500 text-sm">Full Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 peer"
+                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </motion.div>
 
@@ -101,16 +124,14 @@ const Register = () => {
               transition={{ delay: 0.4 }}
               className="relative"
             >
-              <label className="left-4 -top-3 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-teal-500">
-                Email Address
-              </label>
+              <label className="text-gray-500 text-sm">Email Address</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 peer"
+                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </motion.div>
 
@@ -121,16 +142,14 @@ const Register = () => {
               transition={{ delay: 0.5 }}
               className="relative"
             >
-              <label className="left-4 -top-3 text-gray-500 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-teal-500">
-                Password
-              </label>
+              <label className="text-gray-500 text-sm">Password</label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 peer"
+                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </motion.div>
 
@@ -152,6 +171,7 @@ const Register = () => {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
+          {/* Google Sign-in */}
           <motion.button
             whileHover={{ scale: 1.05, rotate: -2 }}
             whileTap={{ scale: 0.95 }}
@@ -161,8 +181,8 @@ const Register = () => {
             Continue with Google
           </motion.button>
         </motion.div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 
