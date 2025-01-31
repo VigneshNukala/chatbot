@@ -19,7 +19,7 @@ Follow these steps to set up your development environment:
 ### **1. Clone the repository:**  
 
 ```
-git clone https://github.com/VigneshNukala/fintech-portfolio-dashboard.git
+git clone https://github.com/VigneshNukala/chatbot.git
 cd chatbot
 ```
 
